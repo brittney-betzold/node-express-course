@@ -4,5 +4,7 @@ const secret = 'SUPER SECRET'
 const john = 'john'
 const peter = 'peter'
 const brittney = 'brittney'
+const alyssa = "alyssa"
+const josh = "josh"
 
-module.exports = { john, peter, brittney }
+module.exports = { john, peter, brittney, alyssa, josh }
