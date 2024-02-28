@@ -1,12 +1,24 @@
-const { readFileSync, writeFileSync } = require('fs')
-console.log('start')
-const first = readFileSync('./content/first.txt', 'utf8')
-const second = readFileSync('./content/second.txt', 'utf8')
+const { readFileSync, writeFileSync } = require('fs');
+const path = require('path');
+
+console.log('start');
+// Would not execute:
+// const first = readFileSync('./content/first.txt','utf-8');
+const firstFilePath = path.join(__dirname, 'content', 'first.txt');
+const secondFilePath = path.join(__dirname, 'content', 'second.txt');
+const resultFilePath = path.join(__dirname, 'content', 'results.txt');
+
+const first = readFileSync(firstFilePath, 'utf-8');
+const second = readFileSync(secondFilePath, 'utf-8');
+
+console.log(first, second);
 
 writeFileSync(
-  './content/result-sync.txt',
-  `Here is the result : ${first}, ${second}`,
+  resultFilePath,
+  `Here is the result: ${first}, ${second}\n`,
   { flag: 'a' }
-)
-console.log('done with this task')
-console.log('starting the next one')
+);
+
+console.log('done with this task');
+console.log('starting the next one');
+
