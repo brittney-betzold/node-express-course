@@ -1,6 +1,5 @@
 var http = require('http')
 var fs = require('fs')
-const { file } = require('loader')
 let counter = 0;
 http
   .createServer(function (req, res) {
