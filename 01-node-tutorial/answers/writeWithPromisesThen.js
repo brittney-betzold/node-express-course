@@ -1,11 +1,11 @@
 const {writeFile, readFile} = require("fs").promises;
 
-writeFile("temp.txt", "\nLine One") // write line 1  
+writeFile("temp.txt", "Line One\n")
 .then(() => {  
-   return writeFile("temp.txt", "\nLine Two")  // write line 2.  
+   return writeFile("temp.txt", "Line Two\n", {flag: "a"})  
 })  
 .then(() => {
-    return writeFile("temp.txt", "\nLine Three\n")  // write line .  
+    return writeFile("temp.txt", "Line Three\n", {flag: "a"}) 
 })
 .then(() => {
     return readFile("temp.txt", "utf-8")
