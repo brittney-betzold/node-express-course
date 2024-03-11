@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1> Week 3 Express </h1>
+    <button id='getAllProductsBtn'>See All Products</button>
+    <div id="productsContainer"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const getAllProductsBtn = document.getElementById('getAllProductsBtn');
+            const productsContainer = document.getElementById('productsContainer');
+
+            getAllProductsBtn.addEventListener('click', async () => {
+                try {
+                    const response = await fetch('/api/v1/products');
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch products');
+                    }
+                    const products = await response.json();
+                    displayProducts(products);
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+
+            function displayProducts(products) {
+                productsContainer.innerHTML = ''; // Clear previous content
+                products.forEach(product => {
+                    const productDiv = document.createElement('div');
+                    productDiv.textContent = `${product.name}: $${product.price}: $${product.image}: $${product.desc}`;
+                    productDiv.style.marginBottom = '10px'; // Add some bottom margin
+                    productsContainer.appendChild(productDiv);
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>
