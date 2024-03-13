@@ -15,20 +15,37 @@ app.get('/api/v1/products', (req,res) => {
 app.get('/api/v1/products/:productID', (req,res) => {
     const idToFind = parseInt(req.params.productID); 
     const product = products.find((p) => p.id === idToFind);
-    if (product) {
-        res.json(product);
-    } else {
-        res.status(404).json({ message: "That product was not found." });
-    }
+    return !product
+    ? res.status(404).json({ message: "That product was not found." }) 
+    : res.json(product);
 })
 app.get('/api/v1/query', (req, res) => {
-    const { search, limit, maxPrice } = req.query;
-    let filteredProducts = products.filter(product => product.name.startsWith(search || ''));
-        filteredProducts = filteredProducts.filter(product => product.price < (maxPrice ? parseFloat(maxPrice) : 20.00));
-    if (limit) {
-        filteredProducts = filteredProducts.slice(0, parseInt(limit));
-    }
-    res.json(filteredProducts);
+    const { search, limit = 0, maxPrice = 0 } = req.query;
+
+    const maxLimit = parseInt(limit, 10);
+
+    // use Array.reduce to build a list of filtered products
+    const filteredProducts = products.reduce((acc, product) => {
+        // if the product price is greater than maxPrice OR
+        // if there's a search and the product name doesn't include the search term OR
+        // if there’s a limit and the accumulator (acc === list of filtered products) hit the limit
+        // then return the accumulator (acc === list of filtered products)
+        if (
+            product.price > parseFloat(maxPrice) || 
+            (search && !product.name.includes(search)) ||
+            (maxLimit && acc.length === maxLimit)
+        ) {
+            return acc;
+        }
+       
+        // add product to accumulator list
+        acc.push(product);
+
+        // return the accumulator to check the next product
+        return acc;
+    }, []);
+
+    res.status(200).json(filteredProducts);
 });
 
 app.all('*', (req,res)=> {
