@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1> Week 3 Express </h1>
+    <button id='getAllProductsBtn'>See All Products</button>
+    <div id="productsContainer"></div>
+
+    <script type='module'>
+
+        const getAllProductsBtn = document.getElementById('getAllProductsBtn');
+        const productsContainer = document.getElementById('productsContainer');
+
+        if (!getAllProductsBtn || !productsContainer) {
+            console.log("Unable to locate getAllProductsBtn or productsContainer")
+            return;
+        }
+        getAllProductsBtn.addEventListener('click', async () => {
+
+            try {
+                const response = await fetch('/api/v1/products');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch products');
+                }
+                const products = await response.json();
+                displayProducts(products);
+            } catch (error) {
+                console.error(error);
+                const errorMessage = document.createElement('p');
+                errorMessage.textContent = 'Unable to load products, please try again later';
+                document.body.appendChild(errorMessage);
+            }
+        });
+
+        function displayProducts(products) {
+            productsContainer.innerHTML = '';
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.textContent = `${product.name}: $${product.price}: $${product.image}: $${product.desc}`;
+                productDiv.style.marginBottom = '10px';
+                productsContainer.appendChild(productDiv);
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>
