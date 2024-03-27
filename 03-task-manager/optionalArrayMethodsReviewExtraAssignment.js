@@ -124,6 +124,7 @@ object.behavior()
 // challenges are:
 //
 // - Create a new array with only each person's last name
+
 // - Filter names that don't match the format "<first> <last>"
 //   - Should remove Tam because she has a double-space
 //   - Should remove Carlow because he has a middle-name
@@ -133,6 +134,23 @@ object.behavior()
 //     - "Timmy-Turner"
 //     - "Billy\nBob"
 //     - etc.
+const peopleNames = [
+  "John Smith",
+  "Tam  White",
+  "Carlow James Wilson",
+  "Timothy      Cook",
+  "Nick_Masters",
+  "Timmy-Turner",
+  "Billy\nBob"
+];
+const validNames = peopleNames.filter(name => {
+  return /^[^\s]+\s[^\s]+$/.test(name.trim()) && !name.includes('\n');
+}).map(name => {
+  return name.trim().split(/\s+/).pop();
+});
+
+console.log("VALID NAMES:", validNames);
+
 // - Create a new array where everyone's name is converted to "Title Case"
 //   - The first character of each word should be uppercase
 //   - All other characters in the word should be lowercase
@@ -145,6 +163,47 @@ object.behavior()
 //
 // For an extra assignment, you may implement these yourself! Include your
 // changes to this file with your MR for week 3.
+
+const titleCaseNames = [
+  "John smith",
+  "Tam  white",
+  "Carlos d. perez",
+  "Dimitry santiago",
+  "Nick masters",
+  "Timmy-turner",
+  "Billy\nbob",
+  "Elon Musk",
+  "Mark Zuckerberg"
+];
+
+
+// Function to convert a string to Title Case
+
+// Function to convert a string to Title Case
+const toTitleCase = (str) => {
+  return str.toLowerCase().split(' ').map(word => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+  }).join(' ');
+};
+
+// Filter, format, and exclude names
+const filteredNames = titleCaseNames.filter(name => {
+  // Check if the name matches the format "<first> <last>"
+  return /^[^\s]+\s[^\s]+$/.test(name.trim());
+}).filter(name => {
+  // Exclude names with last name ending with 'z'
+  const lastName = name.trim().split(/\s+/).pop().toLowerCase();
+  return !lastName.endsWith('z');
+}).map(name => {
+  // Convert name to Title Case and handle newline characters
+  return toTitleCase(name.replace(/\n/g, ' '));
+}).map(name => {
+  // Write a message asking them to sign up
+  return `${name}, please sign up for the event!`;
+});
+
+console.log("Filtered and formatted names with sign-up messages:", filteredNames);
+
 
 const names = [
   'Dimitry SantiAgo',
