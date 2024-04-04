@@ -1,0 +1,20 @@
+In this lesson, you created a middleware function called asyncWrapper. Why?
+    We had a lot of dry code, and was able to condense out code to be shorter and more 
+    efficient with using a wrapper that uses async await
+
+Suppose that you want to make sure that both a status code and an error 
+message are sent back to the user when they request the URL for a task 
+that does not exist. Assume that you’ve created a CustomAPIError class 
+and an error handler that references that class. Complete the code:
+
+const getTask = asyncWrapper(async (req, res, next) => {
+  const { id: taskID } = req.params;
+  const task = await Task.findOne({ _id: taskID });
+
+  if (!task) {
+    const error = new CustomAPIError(`Task with ID ${taskID} not found`, 404);
+    return next(error);
+  }
+
+  res.status(200).json({ task });
+});
