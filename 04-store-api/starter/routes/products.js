@@ -1,5 +1,4 @@
 const express = require('express');
-const { join } = require('lodash');
 const router = express.Router();
 
 const {getAllProducts, getAllProductsStatic} = require('../controllers/products')
